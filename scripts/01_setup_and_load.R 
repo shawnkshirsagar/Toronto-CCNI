@@ -1,1 +1,21 @@
+library(sf)
+library(dplyr)
+
+final <- readRDS("data_processed/final_ccni.rds") %>%
+  st_transform(4326)
+
+final <- final %>%
+  select(
+    CTUID,
+    ccni,
+    canopy_deficit_score,
+    building_density_score,
+    density_score,
+    income_score,
+    racialized_score,
+    geometry
+  )
+
+print(names(final))
+print(nrow(final))
 
