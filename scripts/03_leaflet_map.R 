@@ -1,1 +1,58 @@
+library(sf)
+library(dplyr)
+library(leaflet)
+library(htmltools)
+library(htmlwidgets)
+
+final <- readRDS("data_processed/final_ccni.rds") %>%
+  st_transform(4326)
+
+pal_ccni <- colorNumeric("YlOrRd", domain = final$ccni, na.color = "#d9d9d9")
+pal_canopy <- colorNumeric("Greens", domain = final$canopy_deficit_score, na.color = "#d9d9d9")
+pal_building <- colorNumeric("Oranges", domain = final$building_density_score, na.color = "#d9d9d9")
+pal_density <- colorNumeric("Purples", domain = final$density_score, na.color = "#d9d9d9")
+pal_income <- colorNumeric("Blues", domain = final$income_score, na.color = "#d9d9d9")
+pal_racialized <- colorNumeric("Reds", domain = final$racialized_score, na.color = "#d9d9d9")
+
+popup_txt <- ~paste0(
+  "<strong>CTUID:</strong> ", CTUID, "<br>",
+  "<strong>CCNI:</strong> ", round(as.numeric(ccni), 1), "<br>",
+  "<strong>Canopy deficit:</strong> ", round(as.numeric(canopy_deficit_score), 1), "<br>",
+  "<strong>Building density:</strong> ", round(as.numeric(building_density_score), 1), "<br>",
+  "<strong>Population density:</strong> ", round(as.numeric(density_score), 1), "<br>",
+  "<strong>Income vulnerability:</strong> ", round(as.numeric(income_score), 1), "<br>",
+  "<strong>Racialized population:</strong> ", round(as.numeric(racialized_score), 1)
+)
+
+m <- leaflet(final) %>%
+  addProviderTiles(providers$CartoDB.Positron, group = "Base Map") %>%
+  addPolygons(group = "CCNI", fillColor = ~pal_ccni(as.numeric(ccni)), fillOpacity = 0.8, color = "white", weight = 0.4, smoothFactor = 0.2, popup = popup_txt) %>%
+  addPolygons(group = "Canopy deficit", fillColor = ~pal_canopy(as.numeric(canopy_deficit_score)), fillOpacity = 0.8, color = "white", weight = 0.4, smoothFactor = 0.2, popup = popup_txt) %>%
+  addPolygons(group = "Building density", fillColor = ~pal_building(as.numeric(building_density_score)), fillOpacity = 0.8, color = "white", weight = 0.4, smoothFactor = 0.2, popup = popup_txt) %>%
+  addPolygons(group = "Population density", fillColor = ~pal_density(as.numeric(density_score)), fillOpacity = 0.8, color = "white", weight = 0.4, smoothFactor = 0.2, popup = popup_txt) %>%
+  addPolygons(group = "Income vulnerability", fillColor = ~pal_income(as.numeric(income_score)), fillOpacity = 0.8, color = "white", weight = 0.4, smoothFactor = 0.2, popup = popup_txt) %>%
+  addPolygons(group = "Racialized population", fillColor = ~pal_racialized(as.numeric(racialized_score)), fillOpacity = 0.8, color = "white", weight = 0.4, smoothFactor = 0.2, popup = popup_txt) %>%
+  hideGroup(c("Canopy deficit", "Building density", "Population density", "Income vulnerability", "Racialized population")) %>%
+  addLegend(pal = pal_ccni, values = final$ccni, title = "CCNI", position = "bottomright") %>%
+  addLayersControl(
+    baseGroups = c("CCNI", "Canopy deficit", "Building density", "Population density", "Income vulnerability", "Racialized population"),
+    overlayGroups = c("Base Map"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addControl(
+    html = HTML("
+      <div style='background: white; padding: 10px 12px; border-radius: 6px;
+                  box-shadow: 0 1px 5px rgba(0,0,0,0.25); width: 250px; font-size: 12px;'>
+        <b>How CCNI is built</b><br>
+        CCNI combines canopy need and social vulnerability indicators at the
+        census-tract level for Toronto.<br><br>
+        Use the layer control to inspect each component variable separately.
+        Popups show tract-level values for the selected area.
+      </div>
+    "),
+    position = "topleft"
+  ) %>%
+  setView(lng = -79.3832, lat = 43.6532, zoom = 11)
+
+htmlwidgets::saveWidget(m, "index.html", selfcontained = TRUE)
 
