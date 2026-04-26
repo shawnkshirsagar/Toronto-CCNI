@@ -1,1 +1,17 @@
+Toronto CCNI data sources
+
+1. Tree canopy coverage
+City of Toronto Open Data / tree canopy study
+Used to identify canopy deficit at tract level.
+
+2. 2021 census socio-demographic variables
+Statistics Canada / City of Toronto neighbourhood or tract-based census profile data
+Variables used for vulnerability interpretation included income and racialized population share.
+
+3. Building data / derived building density
+City of Toronto building data
+Used to derive a tract-level built-form proxy for heat amplification and hardscape intensity.
+
+4. Final processed file
+A processed spatial file was used to assemble the final tract-level CCNI workflow and map output.
 
