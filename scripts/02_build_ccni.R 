@@ -1,1 +1,42 @@
+library(sf)
+library(dplyr)
+
+min_max_scale <- function(x, invert = FALSE) {
+  scaled <- (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+  if (invert) scaled <- 1 - scaled
+  round(scaled * 100, 1)
+}
+
+final <- readRDS("data_processed/final_ccni.rds") %>%
+  st_transform(4326)
+
+final <- final %>%
+  mutate(
+    canopy_deficit_score = canopy_deficit_score,
+    building_density_score = building_density_score,
+    density_score = density_score,
+    income_score = income_score,
+    racialized_score = racialized_score,
+    ccni = round((
+      canopy_deficit_score +
+      building_density_score +
+      density_score +
+      income_score +
+      racialized_score
+    ) / 5, 1)
+  )
+
+final_fields <- final %>%
+  st_drop_geometry() %>%
+  select(
+    CTUID,
+    ccni,
+    canopy_deficit_score,
+    building_density_score,
+    density_score,
+    income_score,
+    racialized_score
+  )
+
+write.csv(final_fields, "data/final_ccni_fields.csv", row.names = FALSE)
 
