@@ -1,1 +1,22 @@
+Project notes
+
+This repository was assembled as the public-facing component of the JPG2151: GIS & Society applied project.
+
+The workflow moved through multiple stages:
+- data gathering and alignment,
+- tract-level indicator preparation,
+- CCNI construction,
+- interactive Leaflet mapping,
+- final GitHub Pages publication.
+
+Software used
+- Python / Google Colab in earlier exploratory stages
+- R and RStudio for final data handling and mapping
+- Leaflet for the interactive web map
+- GitHub and GitHub Pages for public sharing
+
+Final repository purpose
+This repository is intended to show the simplified workflow, final outputs, and key resource notes behind the Toronto Climate Canopy Need Index project.
+
+StoryMap was not included in the final submission.
 
