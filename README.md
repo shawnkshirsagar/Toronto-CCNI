@@ -19,8 +19,8 @@ Repository contents
 
 Workflow summary
 
-The project combined tract-level tree canopy coverage, socio-demographic vulnerability indicators from the 2021 census, and building density to construct a normalized Climate Canopy Need Index (CCNI).[file:1313][file:1357] The workflow moved through data preparation, alignment, normalization, index construction, and interactive mapping using R, Leaflet, and GitHub Pages.[file:1357]
+The project combined tract-level tree canopy coverage, socio-demographic vulnerability indicators from the 2021 census, and building density to construct a normalized Climate Canopy Need Index (CCNI). The workflow moved through data preparation, alignment, normalization, index construction, and interactive mapping using R, Leaflet, and GitHub Pages.
 
 Project purpose
 
-The CCNI was designed as a transparent and reproducible GIS workflow that translates tract-level environmental and socio-demographic indicators into an interpretable planning tool for discussing urban heat equity in Toronto.[file:1357][file:1313]
+The CCNI was designed as a transparent and reproducible GIS workflow that translates tract-level environmental and socio-demographic indicators into an interpretable planning tool for discussing urban heat equity in Toronto.
